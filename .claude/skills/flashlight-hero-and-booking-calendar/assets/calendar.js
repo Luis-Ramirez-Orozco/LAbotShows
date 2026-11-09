@@ -21,8 +21,7 @@
     { id: "extra-hour", label: "Extra Performer Hour", price: 150 },
     { id: "photo-session", label: "Photo / Meet & Greet Session", price: 75 },
     { id: "confetti", label: "Confetti Effect", price: 60 },
-    { id: "branding", label: "Custom Signage / Branding", price: 100 },
-    { id: "travel", label: "Travel Beyond 30 Miles", price: 50 }
+    { id: "branding", label: "Custom Signage / Branding", price: 100 }
   ];
 
   function priceFor(date) {

@@ -19,7 +19,6 @@
   // Shown in the "Show Details" panel next to the calendar.
   var CONTACT_EMAIL = "labotshows@gmail.com";
   var CONTACT_PHONE = "949-395-0250";
-  var MILE_SURCHARGE = "$3 per mile";
   // Pre-filled text when someone taps the phone number to send a message.
   var SMS_MESSAGE = "Hi, I'd like to book a robot show";
 
@@ -51,7 +50,9 @@
     var gridStart = new Date(firstOfMonth);
     gridStart.setDate(gridStart.getDate() - firstOfMonth.getDay());
     var days = [];
-    for (var i = 0; i < 42; i++) {
+    // Only as many weeks as the month needs (4-6 rows)
+    var rows = Math.ceil((firstOfMonth.getDay() + new Date(month.getFullYear(), month.getMonth() + 1, 0).getDate()) / 7);
+    for (var i = 0; i < rows * 7; i++) {
       var d = new Date(gridStart);
       d.setDate(gridStart.getDate() + i);
       days.push(d);
@@ -96,31 +97,6 @@
       '    <button type="button" class="calendar-confirm-btn" id="calendar-inquire-btn" disabled>Inquire</button>' +
       "  </div>" +
       "</div>" +
-      '<aside class="calendar-modal booking-details" aria-labelledby="details-title">' +
-      '  <div class="calendar-modal-header">' +
-      '    <h2 id="details-title">Show Details</h2>' +
-      "  </div>" +
-      '  <section class="details-section">' +
-      "    <h3>The Show</h3>" +
-      "    <p><strong>45 minutes</strong> total</p>" +
-      "    <ul>" +
-      "      <li>30 minutes of dancing</li>" +
-      "      <li>15 minutes of photos</li>" +
-      "    </ul>" +
-      "  </section>" +
-      '  <section class="details-section">' +
-      "    <h3>Travel</h3>" +
-      "    <ul>" +
-      "      <li>Free within 30 miles of Irwindale</li>" +
-      "      <li>" + MILE_SURCHARGE + " after that</li>" +
-      "    </ul>" +
-      "  </section>" +
-      '  <section class="details-section">' +
-      "    <h3>Contact</h3>" +
-      contactLine(CONTACT_EMAIL, CONTACT_EMAIL.indexOf("@") > -1 ? "mailto:" + CONTACT_EMAIL : null) +
-      contactLine(CONTACT_PHONE, /\d{7}/.test(CONTACT_PHONE.replace(/\D/g, "")) ? "sms:" + CONTACT_PHONE.replace(/[^\d+]/g, "") + "?&body=" + encodeURIComponent(SMS_MESSAGE) : null, "Text:") +
-      "  </section>" +
-      "</aside>" +
       "</div>";
     document.body.appendChild(overlay);
     return overlay;
@@ -184,6 +160,11 @@
       '  <div class="calendar-footer">' +
       '    <span id="phone-error" class="phone-error"></span>' +
       '    <button type="button" class="calendar-confirm-btn" id="phone-send">Send</button>' +
+      // Phones: two buttons instead of Send, so the visitor can jump straight into email or a text message
+      '    <span class="send-split">' +
+      '      <button type="button" class="calendar-confirm-btn" id="phone-email">Email</button>' +
+      '      <button type="button" class="calendar-confirm-btn" id="phone-text">Text</button>' +
+      "    </span>" +
       "  </div>" +
       "</div>";
     document.body.appendChild(overlay);
@@ -202,6 +183,7 @@
       '    <button type="button" class="calendar-close" id="thankyou-close" aria-label="Close">&times;</button>' +
       "  </div>" +
       '  <p class="thankyou-message">Thank you for your inquiry. Please wait up to 24 hours for a response.</p>' +
+      '  <p class="thankyou-message" id="mail-fallback" style="font-size:.85em;opacity:.75"></p>' +
       '  <div class="calendar-footer thankyou-footer">' +
       '    <button type="button" class="calendar-confirm-btn" id="thankyou-ok">Close</button>' +
       "  </div>" +
@@ -238,6 +220,8 @@
     var phoneInput = phoneOverlay.querySelector("#phone-input");
     var phoneError = phoneOverlay.querySelector("#phone-error");
     var phoneSend = phoneOverlay.querySelector("#phone-send");
+    var phoneEmail = phoneOverlay.querySelector("#phone-email");
+    var phoneText = phoneOverlay.querySelector("#phone-text");
 
     var thankYouOverlay = buildThankYouModal();
     var thankYouClose = thankYouOverlay.querySelector("#thankyou-close");
@@ -262,6 +246,14 @@
       monthLabel.textContent = MONTH_NAMES[displayedMonth.getMonth()] + " " + displayedMonth.getFullYear();
       gridEl.innerHTML = "";
       buildMonthGrid(displayedMonth).forEach(function (date) {
+        // Days from the previous/next month are left blank, so only this month's dates show
+        if (!isSameMonth(date, displayedMonth)) {
+          var blank = document.createElement("span");
+          blank.className = "calendar-day-blank";
+          blank.setAttribute("aria-hidden", "true");
+          gridEl.appendChild(blank);
+          return;
+        }
         var price = priceFor(date);
         var btn = document.createElement("button");
         btn.type = "button";
@@ -379,7 +371,8 @@
       phoneError.textContent = "";
       phoneOverlay.classList.add("is-open");
       phoneOverlay.setAttribute("aria-hidden", "false");
-      nameInput.focus();
+      // Don't focus the fields: the visitor taps one when ready (avoids the phone keyboard popping up on its own)
+      if (document.activeElement && document.activeElement.blur) document.activeElement.blur();
     }
 
     function closePhone() {
@@ -403,7 +396,8 @@
       if (thankYouLastFocused && thankYouLastFocused.focus) thankYouLastFocused.focus();
     }
 
-    function buildMailto(name, phone) {
+    var lastMail = null;
+    function buildMessage(name, phone) {
       var subject = "New Booking Inquiry" +
         (selectedDate ? " — " + selectedDate.toLocaleDateString(undefined, { month: "short", day: "numeric", year: "numeric" }) : "");
 
@@ -429,11 +423,20 @@
       lines.push("Estimated total: $" + grandTotal);
       lines.push("");
       lines.push("Customer name: " + name);
-      lines.push("Customer phone: " + phone);
+      if (phone) lines.push("Customer phone: " + phone);
 
+      return { subject: subject, body: lines.join("\n") };
+    }
+    function buildMailto(name, phone) {
+      lastMail = buildMessage(name, phone);
       return "mailto:" + OWNER_EMAIL +
-        "?subject=" + encodeURIComponent(subject) +
-        "&body=" + encodeURIComponent(lines.join("\n"));
+        "?subject=" + encodeURIComponent(lastMail.subject) +
+        "&body=" + encodeURIComponent(lastMail.body);
+    }
+    // Opens the messaging app with the booking details addressed to the owner's number.
+    function buildSms(name, phone) {
+      var msg = buildMessage(name, phone);
+      return "sms:" + CONTACT_PHONE.replace(/[^\d+]/g, "") + "?&body=" + encodeURIComponent(msg.subject + "\n" + msg.body);
     }
 
     document.addEventListener("keydown", onGlobalKeydown);
@@ -509,6 +512,26 @@
     phoneInput.addEventListener("keydown", function (e) {
       if (e.key === "Enter") phoneSend.click();
     });
+    function finishInquiry(fallbackHtml) {
+      var fb = thankYouOverlay.querySelector("#mail-fallback");
+      if (fb) fb.innerHTML = fallbackHtml;
+      closePhone();
+      closeCalendar();
+      openThankYou();
+      resetBooking();
+    }
+    // Text: only a name is needed, since the message itself comes from the visitor's own number.
+    phoneText.addEventListener("click", function () {
+      var name = nameInput.value.trim();
+      if (!name) {
+        phoneError.textContent = "Please enter your name.";
+        nameInput.focus();
+        return;
+      }
+      window.location.href = buildSms(name, phoneInput.value.trim());
+      finishInquiry("Text didn't open? Message us at " + CONTACT_PHONE + ".");
+    });
+    phoneEmail.addEventListener("click", function () { phoneSend.click(); });
     phoneSend.addEventListener("click", function () {
       var name = nameInput.value.trim();
       if (!name) {
@@ -523,6 +546,8 @@
         return;
       }
       window.location.href = buildMailto(name, phoneInput.value.trim());
+      var fb = thankYouOverlay.querySelector("#mail-fallback");
+      if (fb && lastMail) fb.innerHTML = "Email didn't open? <a target=\"_blank\" rel=\"noopener\" href=\"https://mail.google.com/mail/?view=cm&to=" + encodeURIComponent(OWNER_EMAIL) + "&su=" + encodeURIComponent(lastMail.subject) + "&body=" + encodeURIComponent(lastMail.body) + "\">Open in Gmail</a> or write to " + OWNER_EMAIL + ".";
       closePhone();
       closeCalendar();
       openThankYou();
