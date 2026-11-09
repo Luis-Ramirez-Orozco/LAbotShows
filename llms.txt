@@ -19,6 +19,6 @@
 - Requests are answered within 24 hours
 
 ## Pages
-- [Home, booking calendar, FAQ](https://labotshows.com/)
-- [Gallery](https://labotshows.com/gallery.html)
-- [About us](https://labotshows.com/about.html)
+- [Home: what we do, gallery, about us, booking calendar, FAQ (one page)](https://labotshows.com/)
+- [Gallery section](https://labotshows.com/#gallery)
+- [About us section](https://labotshows.com/#about)

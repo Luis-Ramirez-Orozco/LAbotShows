@@ -1,9 +1,9 @@
 /* FAQ popup. Self-contained (no other stylesheet needed). Change the accent with --faq-accent. */
 .faq-overlay {
-  --faq-accent: #ececec;
+  --faq-accent: #e6b450;
   position: fixed; inset: 0; z-index: 200; display: none;
   align-items: center; justify-content: center; padding: 1.5rem;
-  background: rgba(0, 0, 0, 0.6);
+  background: rgba(5, 5, 6, 0.72);
 }
 .faq-overlay.is-open { display: flex; }
 
@@ -12,13 +12,13 @@
   width: 100%; max-width: 560px;
   height: min(640px, calc(100vh - 3rem)); height: min(640px, calc(100dvh - 3rem));
   display: flex; flex-direction: column; overflow: hidden; box-sizing: border-box;
-  background: #171717; color: #ececec; border-radius: 1.5rem; padding: 1.75rem 1.9rem;
+  background: #18181a; color: #f6f2ea; border-radius: 1.5rem; padding: 1.75rem 1.9rem;
   border: 1px solid rgba(255, 255, 255, 0.12); box-shadow: 0 20px 60px rgba(0, 0, 0, 0.55);
   font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
 }
 .faq-head { flex: none; display: flex; align-items: center; justify-content: space-between; margin-bottom: 1rem; }
 .faq-head h2 { margin: 0; font-size: 1.5rem; }
-.faq-close { background: none; border: 0; font-size: 2rem; line-height: 1; cursor: pointer; color: #ececec; width: 2.75rem; height: 2.75rem; border-radius: .75rem; }
+.faq-close { background: none; border: 0; font-size: 2rem; line-height: 1; cursor: pointer; color: #f6f2ea; width: 2.75rem; height: 2.75rem; border-radius: .75rem; }
 .faq-close:hover { background: rgba(255, 255, 255, 0.1); }
 
 .faq-list { flex: 1; min-height: 0; overflow-y: auto; -webkit-overflow-scrolling: touch; padding-right: .9rem;
@@ -28,11 +28,11 @@
 .faq-list::-webkit-scrollbar-thumb { background: var(--faq-accent); border-radius: 3px; }
 
 .faq-list details { border-top: 1px solid rgba(255, 255, 255, 0.12); padding: .35rem 0; }
-.faq-list summary { cursor: pointer; font-weight: 700; font-size: 1.02rem; color: #ececec; list-style: none; display: flex;
+.faq-list summary { cursor: pointer; font-weight: 700; font-size: 1.02rem; color: #f6f2ea; list-style: none; display: flex;
   justify-content: space-between; align-items: center; gap: 1rem; padding: .65rem .85rem; border-radius: .75rem; transition: background .15s, color .15s; }
 .faq-list summary::-webkit-details-marker { display: none; }
 .faq-list summary::after { content: "+"; color: var(--faq-accent); font-weight: 700; font-size: 1.3rem; line-height: 1; }
 /* The selected question is highlighted; its answer sits below, unhighlighted */
-.faq-list details[open] summary { background: var(--faq-accent); color: #101010; }
-.faq-list details[open] summary::after { content: "\2212"; color: #101010; }
-.faq-list p { margin: .55rem .85rem .4rem; color: #a3a3a3; font-size: .98rem; line-height: 1.5; }
+.faq-list details[open] summary { background: var(--faq-accent); color: #1a1203; }
+.faq-list details[open] summary::after { content: "\2212"; color: #1a1203; }
+.faq-list p { margin: .55rem .85rem .4rem; color: #c4bdb0; font-size: .98rem; line-height: 1.5; }

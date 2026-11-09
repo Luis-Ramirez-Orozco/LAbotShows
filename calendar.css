@@ -10,7 +10,7 @@
   align-items: center;
   justify-content: center;
   padding: 1.5rem;
-  background: rgba(0, 0, 0, 0.6);
+  background: rgba(5, 5, 6, 0.72);
   backdrop-filter: blur(4px);
   -webkit-backdrop-filter: blur(4px);
   opacity: 0;
@@ -26,11 +26,11 @@
 .calendar-modal {
   width: 100%;
   max-width: 480px;
-  background: #171717;
+  background: #18181a;
   border: 1px solid rgba(255, 255, 255, 0.12);
   border-radius: 1.5rem;
   padding: 1.875rem;
-  color: #ececec;
+  color: #f6f2ea;
   font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.55);
   transform: scale(0.96) translateY(8px);
@@ -63,7 +63,7 @@
   border: none;
   border-radius: 0.75rem;
   background: none;
-  color: #ececec;
+  color: #f6f2ea;
   font-size: 2.0625rem;
   line-height: 1;
   cursor: pointer;
@@ -89,13 +89,13 @@
   border: none;
   border-radius: 0.75rem;
   background: none;
-  color: #b5b5b5;
+  color: #c4bdb0;
   cursor: pointer;
 }
 
 .calendar-nav-btn:hover {
   background: rgba(255, 255, 255, 0.08);
-  color: #ececec;
+  color: #f6f2ea;
 }
 
 .calendar-month-label {
@@ -120,7 +120,7 @@
   height: 2.625rem;
   font-size: 1.03rem;
   font-weight: 600;
-  color: #8a8a8a;
+  color: #9d9688;
 }
 
 .calendar-grid {
@@ -137,7 +137,7 @@
   border: none;
   border-radius: 0.85rem;
   background: none;
-  color: #ececec;
+  color: #f6f2ea;
   cursor: pointer;
 }
 
@@ -150,7 +150,7 @@
   font-size: 0.6875rem;
   line-height: 1;
   font-weight: 500;
-  color: #8a8a8a;
+  color: #9d9688;
 }
 
 .calendar-day.is-selected .calendar-day-price {
@@ -174,8 +174,8 @@
 }
 
 .calendar-day.is-selected {
-  background: #ececec;
-  color: #101010;
+  background: #e6b450;
+  color: #1a1203;
 }
 
 .calendar-day.is-selected .calendar-day-number {
@@ -200,7 +200,7 @@
   padding-top: 1.125rem;
   border-top: 1px solid rgba(255, 255, 255, 0.1);
   font-size: 1.21875rem;
-  color: #b5b5b5;
+  color: #c4bdb0;
 }
 
 .calendar-confirm-btn {
@@ -208,15 +208,15 @@
   border: none;
   border-radius: 0.75rem;
   padding: 0.6rem 1.35rem;
-  background: #ececec;
-  color: #101010;
+  background: #e6b450;
+  color: #1a1203;
   font-weight: 700;
   font-size: 1.21875rem;
   cursor: pointer;
 }
 
 .calendar-confirm-btn:hover:not(:disabled) {
-  background: #ffffff;
+  background: #f1cd85;
 }
 
 .calendar-confirm-btn:disabled {
@@ -230,7 +230,7 @@
   border-radius: 0.75rem;
   padding: 0.6rem 1.35rem;
   background: none;
-  color: #ececec;
+  color: #f6f2ea;
   font-weight: 600;
   font-size: 1.21875rem;
   cursor: pointer;
@@ -290,7 +290,7 @@
   font-weight: 600;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: #8a8a8a;
+  color: #9d9688;
 }
 
 .details-section p {
@@ -304,20 +304,20 @@
   list-style: disc;
   font-size: 1.0625rem;
   line-height: 1.6;
-  color: #d4d4d4;
+  color: #ddd6c8;
 }
 
 .details-contact {
   display: block;
   font-size: 1.0625rem;
   line-height: 1.7;
-  color: #ececec;
+  color: #f6f2ea;
   text-decoration: none;
   overflow-wrap: anywhere;
 }
 
 .details-contact-label {
-  color: #8a8a8a;
+  color: #9d9688;
 }
 
 .details-contact:hover {
@@ -372,7 +372,7 @@
 }
 
 .addon-card:has(.addons-checkbox:checked) {
-  border-color: #ececec;
+  border-color: #e6b450;
 }
 
 .addon-card-img {
@@ -388,7 +388,7 @@
   right: 0.5rem;
   width: 1.125rem;
   height: 1.125rem;
-  accent-color: #ececec;
+  accent-color: #e6b450;
   cursor: pointer;
 }
 
@@ -408,7 +408,7 @@
 .addon-card-price {
   flex-shrink: 0;
   font-size: 0.9rem;
-  color: #8a8a8a;
+  color: #9d9688;
 }
 
 .addon-qty {
@@ -421,7 +421,7 @@
 .addon-qty-label {
   flex: 1;
   font-size: 0.8125rem;
-  color: #8a8a8a;
+  color: #9d9688;
 }
 
 .addon-qty-btn {
@@ -433,7 +433,7 @@
   border: 1px solid rgba(255, 255, 255, 0.25);
   border-radius: 0.5rem;
   background: none;
-  color: #ececec;
+  color: #f6f2ea;
   font-size: 1rem;
   line-height: 1;
   cursor: pointer;
@@ -458,7 +458,7 @@
 .phone-helper {
   margin: 0 0 0.75rem;
   font-size: 1rem;
-  color: #8a8a8a;
+  color: #9d9688;
 }
 
 .phone-input {
@@ -468,8 +468,8 @@
   margin-bottom: 0.75rem;
   border: 1px solid rgba(255, 255, 255, 0.18);
   border-radius: 0.75rem;
-  background: #101010;
-  color: #ececec;
+  background: #0c0c0d;
+  color: #f6f2ea;
   font-size: 1.0625rem;
   font-family: inherit;
 }
@@ -494,7 +494,7 @@
   margin: 0;
   font-size: 1.0625rem;
   line-height: 1.5;
-  color: #d4d4d4;
+  color: #ddd6c8;
 }
 
 .thankyou-footer {
