@@ -281,10 +281,13 @@
   #robot-figure { position: relative; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
 
   #robot-glow {
-    position: absolute; left: 50%; top: 50%; width: 160%; height: 130%;
-    transform: translate(-50%, -50%); border-radius: 50%;
-    background: radial-gradient(circle, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.55) 35%, rgba(255,255,255,0) 70%);
-    filter: blur(50px); opacity: 0.03; pointer-events: none;
+    position: absolute; left: 50%; top: 50%; width: 170%; height: 140%;
+    transform: translate(-50%, -50%);
+    /* No blur filter and no border-radius: Safari (iPhone/iPad) clips blurred
+       layers to a hard rectangle. The gradient itself is soft and reaches fully
+       transparent before the box edge, so nothing can show a boxy edge. */
+    background: radial-gradient(closest-side, rgba(255,255,255,0.9) 0%, rgba(255,255,255,0.62) 22%, rgba(255,255,255,0.32) 45%, rgba(255,255,255,0.12) 70%, rgba(255,255,255,0) 100%);
+    opacity: 0.03; pointer-events: none;
   }
 
   #robot-figure img {
@@ -338,7 +341,8 @@
     #site-nav { flex-direction: column; justify-content: center; padding: 1rem; row-gap: 0.5rem; }
     #site-nav.is-scrolled { padding-top: 0.6rem; padding-bottom: 0.6rem; }
     #site-nav .site-title { font-size: 1.25rem; }
-    #site-nav .nav-links { justify-content: center; gap: 1.1rem; font-size: 0.95rem; }
+    #site-nav .nav-links { justify-content: center; gap: 0.85rem; font-size: 0.88rem; }
+    #site-nav #book-now-link { padding: 0.5rem 1rem; }
   }
 
   @media (max-width: 767px) {
@@ -471,6 +475,26 @@
   .about-text-stack p { margin: 0; color: var(--body); font-size: 1rem; line-height: 1.7; }
   .about-video { flex: 0 0 340px; aspect-ratio: 9 / 16; border-radius: 1rem; overflow: hidden; background: #000; border: 1px solid var(--line); }
   .about-video video { display: block; width: 100%; height: 100%; object-fit: cover; }
+  /* --- Contact ------------------------------------------------------------- */
+
+  #contact { background: #0c0c0d; border-top: 1px solid var(--line); }
+  .contact-cards { max-width: 760px; margin: 0 auto; display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem; }
+  .contact-card {
+    display: flex; flex-direction: column; align-items: center; gap: 0.35rem; text-align: center;
+    padding: 2rem 1.5rem; border-radius: 1rem; border: 1px solid var(--line);
+    background: linear-gradient(160deg, #202022 0%, #18181a 70%);
+    color: var(--text); text-decoration: none;
+    transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+  }
+  .contact-card:hover { transform: translateY(-3px); border-color: rgba(230, 180, 80, 0.55); box-shadow: 0 10px 30px rgba(230, 180, 80, 0.08); }
+  .contact-icon {
+    width: 3.25rem; height: 3.25rem; margin-bottom: 0.75rem; display: flex; align-items: center; justify-content: center;
+    background: rgba(230, 180, 80, 0.1); border: 1px solid rgba(230, 180, 80, 0.25); border-radius: 0.75rem; color: var(--accent);
+  }
+  .contact-label { color: var(--muted); text-transform: uppercase; letter-spacing: 0.12em; font-size: 0.75rem; font-weight: 600; }
+  .contact-value { font-size: 1.15rem; font-weight: 700; word-break: break-word; }
+  @media (max-width: 600px) { .contact-cards { grid-template-columns: 1fr; } }
+
   @media (max-width: 768px) {
     .about-layout { flex-direction: column; gap: 2rem; }
     .about-video { flex-basis: auto; width: 100%; max-width: 380px; }
@@ -484,6 +508,7 @@
   <div class="nav-links">
     <a href="#gallery">Gallery</a>
     <a href="#about">About Us</a>
+    <a href="#contact">Contact Us</a>
     <a href="#" data-faq-open>FAQ</a>
     <a href="#" id="book-now-link">Book Now</a>
   </div>
@@ -650,6 +675,25 @@
 </section>
 
 </div>
+
+<section id="contact" class="site-section">
+  <div class="section-intro" style="margin-bottom:2rem">
+    <p class="section-eyebrow">Get In Touch</p>
+    <h2 class="section-title">Contact Us</h2>
+  </div>
+  <div class="contact-cards">
+    <a class="contact-card" href="mailto:labotshows@gmail.com">
+      <span class="contact-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg></span>
+      <span class="contact-label">Email</span>
+      <span class="contact-value">labotshows@gmail.com</span>
+    </a>
+    <a class="contact-card" href="sms:+19493950250">
+      <span class="contact-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a8 8 0 0 1-11.6 7.1L4 20.5l1.5-4.6A8 8 0 1 1 21 12Z"/></svg></span>
+      <span class="contact-label">Text</span>
+      <span class="contact-value">949-395-0250</span>
+    </a>
+  </div>
+</section>
 
 <div id="photo-lightbox" class="calendar-overlay" aria-hidden="true">
   <div class="calendar-modal photo-lightbox-modal" role="dialog" aria-modal="true" aria-label="Photo preview">
@@ -1294,7 +1338,7 @@
       links.forEach(function (a) { a.classList.toggle("is-active", a.getAttribute("href") === "#" + en.target.id); });
     });
   }, { rootMargin: "-45% 0px -50% 0px" });
-  ["top", "event-categories", "gallery", "about"].forEach(function (id) {
+  ["top", "event-categories", "gallery", "about", "contact"].forEach(function (id) {
     var el = document.getElementById(id); if (el) spy.observe(el);
   });
 
